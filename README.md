@@ -5,4 +5,4 @@ GooMPy provide a Python interface tot the Google Static Maps API, automaticallyd
   
   https://developers.google.com/maps/documentation/staticmaps/#api_key
   
-Once you have your key, put it in the file key.py, and GooMPy will use it in fetching map tiles.
+Once you have your key, put it in the file goompy/key.py, and GooMPy will use it in fetching map tiles.
