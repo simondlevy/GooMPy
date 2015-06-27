@@ -43,7 +43,7 @@ class Progbar(Progressbar):
 
         self.progbar = Progressbar( canvas, orient="horizontal", length=cw-2*self.x, mode="determinate")
 
-        self.label = Label(canvas, text='Loading tiles ...', font=('Helvetica', 18))
+        self.label = Label(canvas, text='Downloading tiles ...', font=('Helvetica', 18))
 
     def start(self, maxval):
 
