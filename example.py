@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+'''
 Example of using GooMPy with Tkinter
 
 Copyright (C) 2015 Alec Singer and Simon D. Levy
@@ -14,6 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 You should have received a copy of the GNU Lesser General Public License 
 along with this code.  If not, see <http://www.gnu.org/licenses/>.
+'''
 
 if __name__ == '__main__':
 
