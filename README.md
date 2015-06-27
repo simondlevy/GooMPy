@@ -8,3 +8,5 @@ Because Google limits the number of tiles that you can download during a given t
   https://developers.google.com/maps/documentation/staticmaps/#api_key
   
 Once you have your key, put it in the file goompy/key.py, and GooMPy will use it in fetching map tiles.
+
+You'll need the Python Image Library (PIL) or equivalent (Pillow for Windows and OS X) installed on your computer equivalent to run GooMPy.  
