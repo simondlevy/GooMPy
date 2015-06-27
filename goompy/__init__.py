@@ -105,8 +105,6 @@ def fetchTiles(latitude, longitude, zoom, maptype, radius_meters, reporter=None)
     bigsize = ntiles * _TILESIZE
     bigimage = _new_image(bigsize, bigsize)
 
-    sys.stdout.flush()
-
     if reporter != None:
         reporter.start(ntiles*ntiles)
 
