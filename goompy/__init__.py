@@ -81,7 +81,7 @@ def _pix_to_lat(k, latpix, ntiles, _TILESIZE, zoom):
 
     return math.degrees(math.pi/2 - 2 * math.atan(math.exp(((latpix + _pixels_to_degrees((k-ntiles/2)*_TILESIZE, zoom)) - _EARTHPIX) / _pixrad))) 
 
-def fetchTiles(latitude, longitude, zoom, maptype, radius_meters, reporter=None):
+def fetchTiles(latitude, longitude, zoom, maptype, radius_meters):
     '''
     Fetches tiles from GoogleMaps at the specified coordinates, zoom level (0-22), and map type ('roadmap', 
     'terrain', 'satellite', or 'hybrid').  The value of radius_meters deteremines the number of tiles that will be 
@@ -105,20 +105,12 @@ def fetchTiles(latitude, longitude, zoom, maptype, radius_meters, reporter=None)
     bigsize = ntiles * _TILESIZE
     bigimage = _new_image(bigsize, bigsize)
 
-    if reporter != None:
-        reporter.start(ntiles*ntiles)
-
     for j in range(ntiles):
         lon = _pix_to_lon(j, lonpix, ntiles, _TILESIZE, zoom)
         for k in range(ntiles):
             lat = _pix_to_lat(k, latpix, ntiles, _TILESIZE, zoom)
             tile = _grab_tile(lat, lon, zoom, maptype, _TILESIZE, 1./_GRABRATE)
-            if reporter != None:
-                reporter.update(j*ntiles+k+1)
             bigimage.paste(tile, (j*_TILESIZE,k*_TILESIZE))
-
-    if reporter != None:
-        reporter.stop()
 
     west = _pix_to_lon(0, lonpix, ntiles, _TILESIZE, zoom)
     east = _pix_to_lon(ntiles-1, lonpix, ntiles, _TILESIZE, zoom)
@@ -131,14 +123,12 @@ def fetchTiles(latitude, longitude, zoom, maptype, radius_meters, reporter=None)
 
 class GooMPy(object):
 
-    def __init__(self, width, height, latitude, longitude, zoom, maptype, radius_meters, reporter=None):
+    def __init__(self, width, height, latitude, longitude, zoom, maptype, radius_meters):
         '''
         Creates a GooMPy object for specified display widthan and height at the specified coordinates,
         zoom level (0-22), and map type ('roadmap', 'terrain', 'satellite', or 'hybrid').
         The value of radius_meters deteremines the number of tiles that will be used to create
-        the map image.  The reporter is an optional reporting object that should provide the methods
-        start(self,tiles_total), update(self, tiles_so_far), and stop(self).  Tiles will be fetched using
-        the fetchTiles() method (q.v.) as needed.
+        the map image.  
         '''
 
         self.lat = latitude
@@ -152,7 +142,7 @@ class GooMPy(object):
 
         self.winimage = _new_image(self.width, self.height)
 
-        self.bigimage, self.northwest, self.southeast = fetchTiles(latitude, longitude,  zoom, maptype, radius_meters, reporter)
+        self.bigimage, self.northwest, self.southeast = fetchTiles(latitude, longitude,  zoom, maptype, radius_meters)
 
         self.leftx  = self._center(self.width)
         self.uppery = self._center(self.height)

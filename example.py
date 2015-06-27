@@ -17,9 +17,7 @@ along with this code.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
 from Tkinter import Tk, Canvas, Label, Frame, IntVar, Radiobutton, Button
-from ttk import Progressbar
 from PIL import ImageTk
-from threading import Thread
 
 from goompy import GooMPy
 
@@ -30,41 +28,6 @@ WIDTH = 800
 HEIGHT = 500
 
 RADIUS_METERS = 2000
-
-class Progbar(Progressbar):
-
-    def __init__(self, canvas):
-
-        cw = int(canvas['width'])
-        ch = int(canvas['height'])
-
-        self.x = 100
-        self.y = ch / 2
-
-        self.progbar = Progressbar( canvas, orient="horizontal", length=cw-2*self.x, mode="determinate")
-
-        self.label = Label(canvas, text='Downloading tiles ...', font=('Helvetica', 18))
-
-    def start(self, maxval):
-
-        self.progbar.place(x=self.x, y=self.y)
-        self.label.place(x=self.x, y=self.y-50)
-
-        self.maxval = maxval
-
-    def stop(self):
-
-        self._hide(self.progbar)
-        self._hide(self.label)
-
-    def update(self, value):
-
-        self.progbar['value'] = 100 * value/self.maxval
-
-    def _hide(self, widget):
-
-        widget.place(x=-9999)
-
 
 class UI(Tk):
 
@@ -118,20 +81,14 @@ class UI(Tk):
 
     def restart(self):
 
-        self.thread = Thread(target=self.launch)
-        self.thread.start()
+        self.goompy = GooMPy(WIDTH, HEIGHT, LATITUDE, LONGITUDE, self.zoomlevel, self.maptype, RADIUS_METERS)
+        self.coords = None
+        self.redraw()
 
     def add_radio_button(self, text, index):
 
         maptype = self.maptypes[index]
         Radiobutton(self.radiogroup, text=maptype, variable=self.radiovar, value=index, command=lambda:self.usemap(maptype)).grid(row=0, column=index)
-
-    def launch(self):
-
-        self.progbar = Progbar(self.canvas)
-        self.goompy = GooMPy(WIDTH, HEIGHT, LATITUDE, LONGITUDE, self.zoomlevel, self.maptype, RADIUS_METERS, reporter=self.progbar)
-        self.coords = None
-        self.redraw()
 
     def click(self, event):
 
