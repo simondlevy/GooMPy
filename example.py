@@ -150,7 +150,7 @@ class UI(Tk):
         self.image_tk = ImageTk.PhotoImage(self.image)
         self.label['image'] = self.image_tk
 
-        self.label.place(x=0, y=0, width=WIDTH, height=HEIGHT) # make room for widgets at top
+        self.label.place(x=0, y=0, width=WIDTH, height=HEIGHT) 
 
         self.radiogroup.place(x=0,y=0)
 
