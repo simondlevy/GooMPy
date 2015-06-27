@@ -81,11 +81,12 @@ def _pix_to_lat(k, latpix, ntiles, _TILESIZE, zoom):
 
     return math.degrees(math.pi/2 - 2 * math.atan(math.exp(((latpix + _pixels_to_degrees((k-ntiles/2)*_TILESIZE, zoom)) - _EARTHPIX) / _pixrad))) 
 
-def fetchTiles(latitude, longitude, zoom, maptype, radius_meters):
+def fetchTiles(latitude, longitude, zoom, maptype, radius_meters=None, default_ntiles=4):
     '''
     Fetches tiles from GoogleMaps at the specified coordinates, zoom level (0-22), and map type ('roadmap', 
     'terrain', 'satellite', or 'hybrid').  The value of radius_meters deteremines the number of tiles that will be 
-    fetched.  Tiles are stored as JPEG images in the mapscache folder.
+    fetched; if it is unspecified, the number defaults to default_ntiles.  Tiles are stored as JPEG images 
+    in the mapscache folder.
     '''
  
     latitude = _roundto(latitude, _DEGREE_PRECISION)
@@ -95,7 +96,7 @@ def fetchTiles(latitude, longitude, zoom, maptype, radius_meters):
     pixels_per_meter = 2**zoom / (156543.03392 * math.cos(math.radians(latitude)))
 
     # number of tiles required to go from center latitude to desired radius in meters
-    ntiles = int(round(2 * pixels_per_meter / (_TILESIZE /2./ radius_meters)))
+    ntiles = default_ntiles if radius_meters is None else int(round(2 * pixels_per_meter / (_TILESIZE /2./ radius_meters))) 
 
     lonpix = _EARTHPIX + longitude * math.radians(_pixrad)
 
@@ -123,12 +124,12 @@ def fetchTiles(latitude, longitude, zoom, maptype, radius_meters):
 
 class GooMPy(object):
 
-    def __init__(self, width, height, latitude, longitude, zoom, maptype, radius_meters):
+    def __init__(self, width, height, latitude, longitude, zoom, maptype, radius_meters=None, default_ntiles=4):
         '''
         Creates a GooMPy object for specified display widthan and height at the specified coordinates,
         zoom level (0-22), and map type ('roadmap', 'terrain', 'satellite', or 'hybrid').
         The value of radius_meters deteremines the number of tiles that will be used to create
-        the map image.  
+        the map image; if it is unspecified, the number defaults to default_ntiles.  
         '''
 
         self.lat = latitude

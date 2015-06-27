@@ -19,6 +19,8 @@ along with this code.  If not, see <http://www.gnu.org/licenses/>.
 from Tkinter import Tk, Canvas, Label, Frame, IntVar, Radiobutton, Button
 from PIL import ImageTk
 
+import time
+
 from goompy import GooMPy
 
 LATITUDE  =  37.7913838
@@ -27,7 +29,6 @@ LONGITUDE = -79.44398934
 WIDTH = 800
 HEIGHT = 500
 
-RADIUS_METERS = 2000
 
 class UI(Tk):
 
@@ -76,14 +77,23 @@ class UI(Tk):
 
         newlevel = self.zoomlevel + sign
         if newlevel > 0 and newlevel < 22:
-            self.zoomlevel += sign
+            self.zoomlevel = newlevel
             self.restart()
+
+    def reload(self):
+
+        self.goompy = GooMPy(WIDTH, HEIGHT, LATITUDE, LONGITUDE, self.zoomlevel, self.maptype)
+        self.coords = None
+        self.redraw()
+
+        self['cursor']  = ''
+
 
     def restart(self):
 
-        self.goompy = GooMPy(WIDTH, HEIGHT, LATITUDE, LONGITUDE, self.zoomlevel, self.maptype, RADIUS_METERS)
-        self.coords = None
-        self.redraw()
+        # A little trick to get a watch cursor along with loading
+        self['cursor']  = 'watch'
+        self.after(1, self.reload)
 
     def add_radio_button(self, text, index):
 

@@ -14,6 +14,7 @@ You should have received a copy of the GNU Lesser General Public License
 along with this code.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
-# Get a key from https://developers.google.com/maps/documentation/staticmaps/#api_key and put it between the quotation marks below:
+# Get a key from https://developers.google.com/maps/documentation/staticmaps/#api_key and put it between the 
+# quotation marks below:
 _KEY = ''
 
