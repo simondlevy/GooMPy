@@ -85,7 +85,7 @@ class UI(Tk):
 
         self.label = Label(self.canvas)
 
-        self.radiogroup = Frame(self.label)
+        self.radiogroup = Frame(self.canvas)
         self.radiovar = IntVar()
         self.maptypes = ['roadmap', 'terrain', 'satellite', 'hybrid']
         self.add_radio_button('Road Map',  0)
@@ -106,7 +106,7 @@ class UI(Tk):
 
     def add_zoom_button(self, text, sign):
 
-        button = Button(self.label, text=text, width=1, command=lambda:self.zoom(sign))
+        button = Button(self.canvas, text=text, width=1, command=lambda:self.zoom(sign))
         return button
 
     def zoom(self, sign):
