@@ -61,6 +61,8 @@ class UI(Tk):
         self.zoom_in_button  = self.add_zoom_button('+', +1)
         self.zoom_out_button = self.add_zoom_button('-', -1)
 
+        self.zoomlevel = ZOOM
+
         maptype_index = 0
         self.radiovar.set(maptype_index)
 
@@ -72,13 +74,6 @@ class UI(Tk):
 
         button = Button(self.canvas, text=text, width=1, command=lambda:self.zoom(sign))
         return button
-
-    def zoom(self, sign):
-
-        newlevel = self.zoomlevel + sign
-        if newlevel > 0 and newlevel < 22:
-            self.zoomlevel = newlevel
-            self.restart()
 
     def reload(self):
 
@@ -131,6 +126,14 @@ class UI(Tk):
 
         self.goompy.useMaptype(maptype)
         self.restart()
+
+    def zoom(self, sign):
+
+        newlevel = self.zoomlevel + sign
+        if newlevel > 0 and newlevel < 22:
+            self.zoomlevel = newlevel
+            self.goompy.useZoom(newlevel)
+            self.restart()
 
     def check_quit(self, event):
 

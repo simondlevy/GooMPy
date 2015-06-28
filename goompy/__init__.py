@@ -177,7 +177,11 @@ class GooMPy(object):
 
     def useZoom(self, zoom):
 
-        None
+        self.zoom = zoom
+
+        self._fetch()
+
+        self._update()
 
     def _fetch(self):
 
