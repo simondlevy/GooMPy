@@ -169,30 +169,29 @@ class GooMPy(object):
     def useMaptype(self, maptype):
 
         self.maptype = maptype
-
-        self._fetch()
-
-        self._update()
+        self._fetch_and_update()
 
     def useZoom(self, zoom):
 
         self.zoom = zoom
+        self._fetch_and_update()
+
+    def _fetch_and_update(self):
 
         self._fetch()
-
         self._update()
 
     def _fetch(self):
 
         self.bigimage, self.northwest, self.southeast = fetchTiles(self.lat, self.lon, self.zoom, self.maptype, self.radius_meters)
 
-    def _center(self, dim):
-
-        return (self.bigimage.size[0] - dim) / 2
-
     def _update(self):
        
         self.winimage.paste(self.bigimage, (-self.leftx, -self.uppery))
+
+    def _center(self, dim):
+
+        return (self.bigimage.size[0] - dim) / 2
 
     def _constrain(self, oldval, diff, dimsize):
 
