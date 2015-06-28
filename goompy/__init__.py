@@ -145,8 +145,9 @@ class GooMPy(object):
 
         self._fetch()
 
-        self.leftx  = self._center(self.width)
-        self.uppery = self._center(self.height)
+        halfsize = self.bigimage.size[0] / 2
+        self.leftx = halfsize
+        self.uppery = halfsize
 
         self._update()
 
@@ -167,11 +168,19 @@ class GooMPy(object):
         self._update()
 
     def useMaptype(self, maptype):
+        '''
+        Uses the specified map type 'roadmap', 'terrain', 'satellite', or 'hybrid'.
+        Map tiles are fetched as needed.
+        '''
 
         self.maptype = maptype
         self._fetch_and_update()
 
     def useZoom(self, zoom):
+        '''
+        Uses the specified zoom level 0 through 22.
+        Map tiles are fetched as needed.
+        '''
 
         self.zoom = zoom
         self._fetch_and_update()
@@ -186,16 +195,11 @@ class GooMPy(object):
         self.bigimage, self.northwest, self.southeast = fetchTiles(self.lat, self.lon, self.zoom, self.maptype, self.radius_meters)
 
     def _update(self):
-       
+
         self.winimage.paste(self.bigimage, (-self.leftx, -self.uppery))
-
-    def _center(self, dim):
-
-        return (self.bigimage.size[0] - dim) / 2
 
     def _constrain(self, oldval, diff, dimsize):
 
         newval = oldval + diff
         return newval if newval > 0 and newval < self.bigimage.size[0]-dimsize else oldval
-
 
