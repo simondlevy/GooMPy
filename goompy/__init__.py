@@ -140,23 +140,16 @@ class GooMPy(object):
 
         self.zoom = zoom
         self.maptype = maptype
+        self.radius_meters = radius_meters
 
         self.winimage = _new_image(self.width, self.height)
 
-        self.bigimage, self.northwest, self.southeast = fetchTiles(latitude, longitude,  zoom, maptype, radius_meters)
+        self._fetch()
 
         self.leftx  = self._center(self.width)
         self.uppery = self._center(self.height)
 
         self._update()
-
-    def _center(self, dim):
-
-        return (self.bigimage.size[0] - dim) / 2
-
-    def _update(self):
-       
-        self.winimage.paste(self.bigimage, (-self.leftx, -self.uppery))
 
     def getImage(self):
         '''
@@ -164,11 +157,6 @@ class GooMPy(object):
         '''
 
         return self.winimage
-
-    def _constrain(self, oldval, diff, dimsize):
-
-        newval = oldval + diff
-        return newval if newval > 0 and newval < self.bigimage.size[0]-dimsize else oldval
 
     def move(self, dx, dy):
         '''
@@ -178,4 +166,34 @@ class GooMPy(object):
         self.leftx = self._constrain(self.leftx, dx, self.width)
         self.uppery = self._constrain(self.uppery, dy, self.height)
         self._update()
+
+    def useMaptype(self, maptype):
+
+        self.maptype = maptype
+
+        self._fetch()
+
+        self._update()
+
+    def useZoom(self, zoom):
+
+        None
+
+    def _fetch(self):
+
+        self.bigimage, self.northwest, self.southeast = fetchTiles(self.lat, self.lon, self.zoom, self.maptype, self.radius_meters)
+
+    def _center(self, dim):
+
+        return (self.bigimage.size[0] - dim) / 2
+
+    def _update(self):
+       
+        self.winimage.paste(self.bigimage, (-self.leftx, -self.uppery))
+
+    def _constrain(self, oldval, diff, dimsize):
+
+        newval = oldval + diff
+        return newval if newval > 0 and newval < self.bigimage.size[0]-dimsize else oldval
+
 

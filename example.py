@@ -23,12 +23,13 @@ import time
 
 from goompy import GooMPy
 
-LATITUDE  =  37.7913838
-LONGITUDE = -79.44398934
-
 WIDTH = 800
 HEIGHT = 500
 
+LATITUDE  =  37.7913838
+LONGITUDE = -79.44398934
+ZOOM = 15
+MAPTYPE = 'roadmap'
 
 class UI(Tk):
 
@@ -62,9 +63,8 @@ class UI(Tk):
 
         maptype_index = 0
         self.radiovar.set(maptype_index)
-        self.maptype = self.maptypes[maptype_index]
 
-        self.zoomlevel = 15
+        self.goompy = GooMPy(WIDTH, HEIGHT, LATITUDE, LONGITUDE, ZOOM, MAPTYPE)
 
         self.restart()
 
@@ -82,7 +82,6 @@ class UI(Tk):
 
     def reload(self):
 
-        self.goompy = GooMPy(WIDTH, HEIGHT, LATITUDE, LONGITUDE, self.zoomlevel, self.maptype)
         self.coords = None
         self.redraw()
 
@@ -98,7 +97,8 @@ class UI(Tk):
     def add_radio_button(self, text, index):
 
         maptype = self.maptypes[index]
-        Radiobutton(self.radiogroup, text=maptype, variable=self.radiovar, value=index, command=lambda:self.usemap(maptype)).grid(row=0, column=index)
+        Radiobutton(self.radiogroup, text=maptype, variable=self.radiovar, value=index, 
+                command=lambda:self.usemap(maptype)).grid(row=0, column=index)
 
     def click(self, event):
 
@@ -129,7 +129,7 @@ class UI(Tk):
 
     def usemap(self, maptype):
 
-        self.maptype = maptype
+        self.goompy.useMaptype(maptype)
         self.restart()
 
     def check_quit(self, event):
