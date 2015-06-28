@@ -19,8 +19,6 @@ along with this code.  If not, see <http://www.gnu.org/licenses/>.
 from Tkinter import Tk, Canvas, Label, Frame, IntVar, Radiobutton, Button
 from PIL import ImageTk
 
-import time
-
 from goompy import GooMPy
 
 WIDTH = 800

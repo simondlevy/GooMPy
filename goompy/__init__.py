@@ -21,7 +21,6 @@ import cStringIO
 import urllib
 import os
 import time
-import sys
 
 try:
     from key import _KEY
