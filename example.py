@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 '''
 Example of using GooMPy with Tkinter
 
@@ -16,7 +16,13 @@ You should have received a copy of the GNU Lesser General Public License
 along with this code.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
-from Tkinter import Tk, Canvas, Label, Frame, IntVar, Radiobutton, Button
+import sys
+
+if sys.version_info[0] == 2:
+    import Tkinter as tk
+else:
+    import tkinter as tk
+
 from PIL import ImageTk
 
 from goompy import GooMPy
@@ -29,16 +35,16 @@ LONGITUDE = -79.44398934
 ZOOM = 15
 MAPTYPE = 'roadmap'
 
-class UI(Tk):
+class UI(tk.Tk):
 
     def __init__(self):
 
-        Tk.__init__(self)
+        tk.Tk.__init__(self)
 
         self.geometry('%dx%d+500+500' % (WIDTH,HEIGHT))
         self.title('GooMPy')
 
-        self.canvas = Canvas(self, width=WIDTH, height=HEIGHT)
+        self.canvas = tk.Canvas(self, width=WIDTH, height=HEIGHT)
 
         self.canvas.pack()
 
@@ -46,10 +52,10 @@ class UI(Tk):
         self.bind('<B1-Motion>', self.drag)
         self.bind('<Button-1>', self.click)
 
-        self.label = Label(self.canvas)
+        self.label = tk.Label(self.canvas)
 
-        self.radiogroup = Frame(self.canvas)
-        self.radiovar = IntVar()
+        self.radiogroup = tk.Frame(self.canvas)
+        self.radiovar = tk.IntVar()
         self.maptypes = ['roadmap', 'terrain', 'satellite', 'hybrid']
         self.add_radio_button('Road Map',  0)
         self.add_radio_button('Terrain',   1)
@@ -70,7 +76,7 @@ class UI(Tk):
 
     def add_zoom_button(self, text, sign):
 
-        button = Button(self.canvas, text=text, width=1, command=lambda:self.zoom(sign))
+        button = tk.Button(self.canvas, text=text, width=1, command=lambda:self.zoom(sign))
         return button
 
     def reload(self):
@@ -90,7 +96,7 @@ class UI(Tk):
     def add_radio_button(self, text, index):
 
         maptype = self.maptypes[index]
-        Radiobutton(self.radiogroup, text=maptype, variable=self.radiovar, value=index, 
+        tk.Radiobutton(self.radiogroup, text=maptype, variable=self.radiovar, value=index, 
                 command=lambda:self.usemap(maptype)).grid(row=0, column=index)
 
     def click(self, event):

@@ -17,8 +17,17 @@ along with this code.  If not, see <http://www.gnu.org/licenses/>.
 
 import math
 import PIL.Image
-import cStringIO
-import urllib
+import sys
+
+from io import BytesIO
+
+if sys.version_info[0] == 2:
+    import urllib
+    urlopen = urllib.urlopen
+else:
+    import urllib.request
+    urlopen = urllib.request.urlopen
+    
 import os
 import time
 
@@ -62,8 +71,8 @@ def _grab_tile(lat, lon, zoom, maptype, _TILESIZE, sleeptime):
     else:
         url = urlbase % specs
 
-        result = urllib.urlopen(url).read()
-        tile = PIL.Image.open(cStringIO.StringIO(result))
+        result = urlopen(url).read()
+        tile = PIL.Image.open(BytesIO(result))
         if not os.path.exists('mapscache'):
             os.mkdir('mapscache')
         tile.save(filename)
@@ -145,7 +154,7 @@ class GooMPy(object):
 
         self._fetch()
 
-        halfsize = self.bigimage.size[0] / 2
+        halfsize = int(self.bigimage.size[0] / 2)
         self.leftx = halfsize
         self.uppery = halfsize
 
