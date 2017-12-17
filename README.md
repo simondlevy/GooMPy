@@ -1,4 +1,7 @@
 # GooMPy
+
+<img src="goompy.png">
+
 Interactive Google Maps for Python.  Tested with Python2.7 and Python3.6.
 
 GooMPy provides a Python interface to the Google Static Maps API, automatically
