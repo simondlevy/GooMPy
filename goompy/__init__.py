@@ -73,6 +73,9 @@ def _grab_tile(lat, lon, zoom, maptype, _TILESIZE, sleeptime):
 
         result = urlopen(url).read()
         tile = PIL.Image.open(BytesIO(result))
+        # Some tiles are in mode `RGBA` and need to be converted
+        if tile.mode != 'RGB':
+            tile = tile.convert('RGB')
         if not os.path.exists('mapscache'):
             os.mkdir('mapscache')
         tile.save(filename)
